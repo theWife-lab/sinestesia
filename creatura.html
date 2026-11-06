@@ -1,0 +1,27 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La Creatura · Sinestesia</title><link rel="icon" href="data:,"><link rel="stylesheet" href="v4.css">
+<style>
+canvas#q{position:fixed;inset:0;width:100vw;height:100vh}
+#nota{position:fixed;left:3.2vw;top:3vh;font:900 clamp(60px,17vh,200px)/.85 "Fraunces Display",Georgia,serif;letter-spacing:-.02em;pointer-events:none}
+#nota small{display:block;font:italic 400 clamp(18px,3.6vh,40px)/1.1 "Instrument Serif",Georgia,serif;letter-spacing:0;margin-top:.6vh}
+#leg{position:fixed;left:3.2vw;bottom:2.6vh;font:italic 15px "Instrument Serif",Georgia,serif;color:var(--mut);max-width:44vw}
+#tempo{position:fixed;right:2vw;bottom:2.4vh;font:10px system-ui;letter-spacing:.22em;text-transform:uppercase;font-variant-numeric:tabular-nums}
+
+#card{position:fixed;inset:0;display:none;place-items:center;background:color-mix(in srgb,var(--bg) 70%,transparent)}
+#card.on{display:grid}#card div{background:var(--bg);border:1px solid var(--ln);padding:28px 34px;min-width:300px}
+#card h2{font:italic 400 32px "Instrument Serif",serif;margin:0 0 12px}#card p{margin:4px 0;font-size:14px}#card b{font:900 22px "Fraunces Display",serif}
+#leg{bottom:auto;top:calc(3vh + clamp(60px,17vh,200px) + 6vh)}
+#nota,#leg{display:none}</style>
+<script>window.V4={modo:'creatura'}</script><script src="comune.js"></script><script src="palco-min.js"></script><script src="generativo/forma-ampia.js"></script><script src="creatura.js"></script></head><body>
+<canvas id="q"></canvas>
+<div id="nota">–<small>suona una nota</small></div>
+<button id="apri" class="k" aria-expanded="false" aria-controls="menu">impostazioni</button>
+<aside id="menu" aria-label="impostazioni"><p class="ser" style="margin:0 0 14px">La Creatura</p>
+<div id="bar"><select id="dev" title="ingresso mic"></select><button id="go">avvia microfono</button><button id="pc">mic computer ×6</button><button id="a4">la 442</button><select id="tr" title="nomi delle note"></select>
+<button id="drone">bordone</button><button id="metro">metronomo 80</button><button id="lv" title="livello di accuratezza"></button></div>
+<p class="mut" style="margin-top:14px">livello = tolleranza: principiante ±25 c · avanzato ±15 c · esperto ±8 c</p></aside>
+<button id="rec" class="rec" title="registra (video: solo il quadro e l’audio)">registra</button>
+<a id="indietro" class="k" href="index.html#modi">← modalità</a>
+<div id="leg"></div><div id="tempo"></div>
+<div id="card"><div id="cardin"></div></div>
+<script src="motore.js"></script></body></html>

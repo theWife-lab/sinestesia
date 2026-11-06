@@ -1,0 +1,61 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sinestesia</title><link rel="icon" href="data:,"><link rel="stylesheet" href="v4.css">
+<style>
+section{position:fixed;inset:0;overflow:auto;padding:6vh 6vw;box-sizing:border-box;display:none;flex-direction:column}
+section.on{display:flex}
+#p1 .riga{height:1px;background:var(--ln);width:0;margin:3vh 0;animation:riga 1.6s ease-out .2s forwards}
+#p1 .riga i{display:block;width:9px;height:9px;border-radius:50%;background:var(--acc);margin:-4px 0 0 auto}
+@keyframes riga{to{width:100%}}
+@media (prefers-reduced-motion:reduce){#p1 .riga{animation:none;width:100%}}
+#strum{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:2vh;max-width:90vw}
+#strum button,.modo{background:none;border:0;border-bottom:1px solid transparent;color:var(--ln);cursor:pointer;padding:4px 0}
+#strum button{font:italic 22px "Instrument Serif",Georgia,serif}
+#strum button[aria-pressed=true]{border-color:var(--acc)}
+#strum .gr{width:100%;margin-top:.6vh}
+#strum{gap:2px 16px}#strum button{font-size:20px;padding:2px 0}
+#p1 .riga{margin:2vh 0}
+.avanti{margin-top:1vh;align-self:flex-start;background:var(--ln);color:var(--bg);border:0;padding:12px 18px;cursor:pointer}
+#modi{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:4vh;flex:1;border-top:1px solid var(--ln)}
+.modo{position:relative;display:flex;flex-direction:column;text-align:left;text-decoration:none;padding:calc(3vh + 12px) 26px 0;border-right:1px solid var(--ln);min-height:44vh}
+.modo:last-child{border-right:0}
+.modo h2,.modo .ser{position:relative;z-index:1;text-shadow:0 0 6px var(--bg),0 0 14px var(--bg)}
+.modo h2{font:900 clamp(32px,6vh,72px)/.9 "Fraunces Display",Georgia,serif;margin:0 0 1.5vh}
+.zoom{position:absolute;inset:12px;z-index:0;background:center bottom/cover no-repeat}
+/* ingrandimenti: ritagli ~3x di frame reali delle modalità */
+[data-m=studio] .zoom{background-image:url(zoom_studio.webp)}[data-m=sole] .zoom{background-image:url(zoom_sole.webp)}[data-m=creatura] .zoom{background-image:url(zoom_creatura.webp)}
+.modo:hover h2{color:var(--acc)}
+@media (max-width:700px){#modi{grid-template-columns:1fr}.modo{border-right:0;border-bottom:1px solid var(--ln)}.modo{min-height:30vh;padding-bottom:16vh}}
+</style><script src="comune.js"></script></head><body>
+<section id="p1" class="on" aria-label="apertura">
+ <p class="k mut">un suono, un segno</p>
+ <h1 class="tit">Sinestesia</h1>
+ <div class="riga"><i></i></div>
+ <p class="ser">Con che cosa suoni oggi?</p>
+ <div id="strum" role="group" aria-label="strumento"></div>
+ <p class="mut ser" id="trinfo" style="font-size:18px"></p>
+ <button class="avanti k" id="avanti">avanti →</button>
+</section>
+<section id="p2" aria-label="modalità">
+ <p class="k mut"><a href="#" id="cambia">← strumento</a> · <span id="insn"></span></p>
+ <h1 class="tit" style="font-size:clamp(44px,10vh,130px)">Scegli come vederti</h1>
+ <nav id="modi">
+  <a class="modo" href="studio.html" data-m="studio"><h2>Lo Studio</h2><span class="ser">la vista classica: la linea dell’altezza, il pannello completo, le prese salvate</span>
+   <span class="zoom"></span></a>
+  <a class="modo" href="sole.html" data-m="sole"><h2>Il Sole</h2><span class="ser">il suono come un sole: nuvole al tramonto, scie dorate per gli attacchi</span>
+   <span class="zoom"></span></a>
+  <a class="modo" href="creatura.html" data-m="creatura"><h2>La Creatura</h2><span class="ser">un velo azzurro e lime che si avvolge sul tuo fiato</span>
+   <span class="zoom"></span></a>
+ </nav>
+</section>
+<script>
+const $=s=>document.querySelector(s),S=$('#strum');let sel=V4.ins,gr='';
+V4_INSTR.forEach(i=>{if(i.g!==gr){gr=i.g;S.insertAdjacentHTML('beforeend',`<span class="gr k mut">${gr}</span>`);}
+ S.insertAdjacentHTML('beforeend',`<button data-i="${i.id}" aria-pressed="${i.id===sel}">${i.n}</button>`);});
+function info(){const I=V4_INSTR.find(x=>x.id===sel);$('#trinfo').textContent=I.tr?`trasposizione: ${I.tr} semitoni (note scritte)`:'in Do (suono reale)';$('#insn').textContent=I.n;
+ document.querySelectorAll('.modo').forEach(a=>a.href=a.dataset.m+'.html?ins='+sel);}
+S.onclick=e=>{const b=e.target.closest('button');if(!b)return;sel=b.dataset.i;V4_setIns(sel);S.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));info();};
+const show=p=>{document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===p));};
+$('#avanti').onclick=()=>{V4_setIns(sel);location.hash='modi';show('p2');};
+$('#cambia').onclick=e=>{e.preventDefault();location.hash='';show('p1');};
+info();if(location.hash==='#modi')show('p2');
+</script></body></html>
